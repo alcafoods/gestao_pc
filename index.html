@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Máquinas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="loginScreen" class="login-overlay">
+        <div class="login-box">
+            <img src="logo.png" alt="Logo Empresa" class="login-logo">
+            <h3>Acesso ao Sistema</h3>
+            <p>Entre com suas credenciais de administrador</p>
+        
+            <input type="text" id="loginUser" placeholder="Usuário">
+            <input type="password" id="loginPass" placeholder="Senha">
+            <button onclick="handleLogin()" id="btnLogin">Entrar</button>
+            <div id="loginError" class="login-error"></div>
+        </div>
+    </div>
+
+<div id="passwordModal" class="login-overlay" style="display: none;">
+    <div class="login-box">
+        <h3>Configurações de Acesso</h3>
+        <p>Altere seu usuário ou senha</p>
+        
+        <input type="password" id="currentPass" placeholder="Senha Atual para confirmar">
+        <hr style="margin: 15px 0; border: 0; border-top: 1px solid #e2e8f0;">
+        
+        <label style="font-size: 12px; display: block; text-align: left; margin-bottom: 5px;">Novo Usuário:</label>
+        <input type="text" id="newUsername" placeholder="Novo Usuário">
+        
+        <label style="font-size: 12px; display: block; text-align: left; margin-bottom: 5px; margin-top: 10px;">Nova Senha (opcional):</label>
+        <input type="password" id="newPass" placeholder="Nova Senha">
+        <input type="password" id="confirmNewPass" placeholder="Confirme a Nova Senha">
+        
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button onclick="updateCredentials()" style="background: var(--success); flex: 1;">Salvar Alterações</button>
+            <button onclick="closePassModal()" style="background: var(--danger); flex: 1;">Cancelar</button>
+        </div>
+        <div id="passError" class="login-error"></div>
+    </div>
+</div>
+
+<header>
+    <div style="display: flex; align-items: center; gap: 15px;">
+        <img src="logo.png" alt="Logo" style="height: 30px;">
+        <h2 style="margin: 0;">Gestão TI</h2>
+    </div>
+    
+    <div style="display: flex; align-items: center; gap: 15px;">
+        <span id="saveStatus" class="status-save">Sistema Online</span>
+        <button onclick="openPassModal()" style="background: #64748b; font-size: 12px; padding: 5px 10px;">⚙️ Acesso</button>
+        <button onclick="logout()" style="background: var(--danger); font-size: 12px; padding: 5px 10px;">Sair</button>
+    </div>
+</header>
+
+<div class="container">
+    <div class="controls">
+        <input type="text" id="user" placeholder="Usuário">
+        <input type="text" id="os" placeholder="S.O (Ex: Win 11)">
+        <input type="text" id="sector" placeholder="Setor">
+        <input type="text" id="ip" placeholder="IP">
+        <input type="text" id="tc" placeholder="TC">
+        <button onclick="addMachine()" id="btnAdd">Adicionar Máquina</button>
+        
+        <div class="filter-group">
+            <label>Filtrar Setor: </label>
+            <select id="filterSector" onchange="renderTable()">
+                <option value="all">Todos</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Usuário</th>
+                    <th>S.O</th>
+                    <th>Setor</th>
+                    <th>IP</th>
+                    <th>TC</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
