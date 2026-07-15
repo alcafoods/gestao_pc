@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestão de Máquinas</title>
-    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="logo.png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,77 +22,208 @@
         </div>
     </div>
 
-<div id="passwordModal" class="login-overlay" style="display: none;">
-    <div class="login-box">
-        <h3>Configurações de Acesso</h3>
-        <p>Altere seu usuário ou senha</p>
-        
-        <input type="password" id="currentPass" placeholder="Senha Atual para confirmar">
-        <hr style="margin: 15px 0; border: 0; border-top: 1px solid #e2e8f0;">
-        
-        <label style="font-size: 12px; display: block; text-align: left; margin-bottom: 5px;">Novo Usuário:</label>
-        <input type="text" id="newUsername" placeholder="Novo Usuário">
-        
-        <label style="font-size: 12px; display: block; text-align: left; margin-bottom: 5px; margin-top: 10px;">Nova Senha (opcional):</label>
-        <input type="password" id="newPass" placeholder="Nova Senha">
-        <input type="password" id="confirmNewPass" placeholder="Confirme a Nova Senha">
-        
-        <div style="display: flex; gap: 10px; margin-top: 20px;">
-            <button onclick="updateCredentials()" style="background: var(--success); flex: 1;">Salvar Alterações</button>
-            <button onclick="closePassModal()" style="background: var(--danger); flex: 1;">Cancelar</button>
-        </div>
-        <div id="passError" class="login-error"></div>
-    </div>
-</div>
-
-<header>
-    <div style="display: flex; align-items: center; gap: 15px;">
-        <img src="logo.png" alt="Logo" style="height: 30px;">
-        <h2 style="margin: 0;">Gestão TI</h2>
-    </div>
-    
-    <div style="display: flex; align-items: center; gap: 15px;">
-        <span id="saveStatus" class="status-save">Sistema Online</span>
-        <button onclick="openPassModal()" style="background: #64748b; font-size: 12px; padding: 5px 10px;">⚙️ Acesso</button>
-        <button onclick="logout()" style="background: var(--danger); font-size: 12px; padding: 5px 10px;">Sair</button>
-    </div>
-</header>
-
-<div class="container">
-    <div class="controls">
-        <input type="text" id="user" placeholder="Usuário">
-        <input type="text" id="os" placeholder="S.O (Ex: Win 11)">
-        <input type="text" id="sector" placeholder="Setor">
-        <input type="text" id="ip" placeholder="IP">
-        <input type="text" id="tc" placeholder="TC">
-        <button onclick="addMachine()" id="btnAdd">Adicionar Máquina</button>
-        
-        <div class="filter-group">
-            <label>Filtrar Setor: </label>
-            <select id="filterSector" onchange="renderTable()">
-                <option value="all">Todos</option>
-            </select>
+    <div id="passwordModal" class="login-overlay" style="display: none;">
+        <div class="login-box">
+            <h3>Configurações de Acesso</h3>
+            <p>Altere seu usuário ou senha</p>
+            
+            <input type="password" id="currentPass" placeholder="Senha Atual para confirmar">
+            <hr style="margin: 15px 0; border: 0; border-top: 1px solid #e2e8f0;">
+            
+            <label style="font-size: 12px; display: block; text-align: left; margin-bottom: 5px;">Novo Usuário:</label>
+            <input type="text" id="newUsername" placeholder="Novo Usuário">
+            
+            <label style="font-size: 12px; display: block; text-align: left; margin-bottom: 5px; margin-top: 10px;">Nova Senha (opcional):</label>
+            <input type="password" id="newPass" placeholder="Nova Senha">
+            <input type="password" id="confirmNewPass" placeholder="Confirme a Nova Senha">
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button onclick="updateCredentials()" style="background: var(--success); flex: 1;">Salvar Alterações</button>
+                <button onclick="closePassModal()" style="background: var(--danger); flex: 1;">Cancelar</button>
+            </div>
+            <div id="passError" class="login-error"></div>
         </div>
     </div>
 
-    <div class="table-wrapper">
-        <table>
-            <thead>
-                <tr>
-                    <th>Usuário</th>
-                    <th>S.O</th>
-                    <th>Setor</th>
-                    <th>IP</th>
-                    <th>TC</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-                </tbody>
-        </table>
+    <div id="machineModal" class="login-overlay" style="display: none;">
+        <div class="login-box machine-box">
+            <h3 id="modalTitle">Cadastrar Nova Máquina</h3>
+            <p>Preencha as especificações técnicas do computador</p>
+            
+            <div class="input-group">
+                <label>Usuário Colaborador*</label>
+                <select id="user">
+                    </select>
+            </div>
+            <div class="input-group">
+                <label>Sistema Operacional</label>
+                <select id="os">
+                    <option value="Windows 10">Windows 10</option>
+                    <option value="Windows 11">Windows 11</option>
+                    <option value="Outro Windows">Outro Windows</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Setor Corporativo*</label>
+                <select id="machineSector">
+                    </select>
+            </div>
+            <div class="input-group">
+                <label>Endereço IP</label>
+                <input type="text" id="ip" placeholder="Ex: 192.168.1.50">
+            </div>
+            <div class="input-group">
+                <label>Código TC</label>
+                <input type="text" id="tc" placeholder="Ex: TC-4022">
+            </div>
+            
+            <div class="modal-actions">
+                <button onclick="addMachine()" id="btnAdd" class="btn-confirm">Adicionar Máquina</button>
+                <button onclick="closeMachineModal()" class="btn-cancel">Voltar</button>
+            </div>
+        </div>
     </div>
-</div>
 
-<script src="script.js"></script>
+    <div id="sectorModal" class="login-overlay" style="display: none;">
+        <div class="login-box machine-box">
+            <h3>Cadastrar Novo Setor</h3>
+            <p>Insira o nome do setor para a organização da empresa</p>
+            
+            <div class="input-group">
+                <label>Nome do Setor*</label>
+                <input type="text" id="newSectorName" placeholder="Ex: Faturamento">
+            </div>
+            
+            <div class="modal-actions">
+                <button onclick="addSector()" class="btn-confirm">Adicionar Setor</button>
+                <button onclick="closeSectorModal()" class="btn-cancel">Voltar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="userModal" class="login-overlay" style="display: none;">
+        <div class="login-box machine-box">
+            <h3>Cadastrar Novo Usuário</h3>
+            <p>Insira o nome completo do colaborador para o inventário</p>
+            
+            <div class="input-group">
+                <label>Nome do Colaborador*</label>
+                <input type="text" id="newUserNameInput" placeholder="Ex: João Silva">
+            </div>
+            
+            <div class="modal-actions">
+                <button onclick="addUser()" class="btn-confirm">Adicionar Usuário</button>
+                <button onclick="closeUserModal()" class="btn-cancel">Voltar</button>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <button onclick="toggleSidebar()" class="btn-toggle-sidebar">☰</button>
+            <h2 style="margin: 0; font-weight: 700; font-size: 18px;">Painel de Controle</h2>
+        </div>
+        
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <span id="saveStatus" class="status-save">Sistema Online</span>
+            <button onclick="openPassModal()" style="background: #64748b; font-size: 12px; padding: 6px 12px;">⚙️ Acesso</button>
+            <button onclick="logout()" style="background: var(--danger); font-size: 12px; padding: 6px 12px;">Sair</button>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <img src="logo.png" alt="Logo" class="sidebar-logo">
+            </div>
+            <nav>
+                <button onclick="switchTab('machines')" id="tab-machines" class="nav-btn active">
+                    <span class="nav-icon">🖥️</span>
+                    <span class="nav-text">Máquinas</span>
+                </button>
+                <button onclick="switchTab('sectors')" id="tab-sectors" class="nav-btn">
+                    <span class="nav-icon">📁</span>
+                    <span class="nav-text">Setores</span>
+                </button>
+                <button onclick="switchTab('users')" id="tab-users" class="nav-btn">
+                    <span class="nav-icon">👤</span>
+                    <span class="nav-text">Usuários</span>
+                </button>
+            </nav>
+        </aside>
+
+        <main class="container">
+            
+            <div id="view-machines" class="tab-content">
+                <div class="controls">
+                    <button onclick="openMachineModal()" class="btn-main-add">➕ Adicionar Máquina</button>
+                    
+                    <div class="filter-group">
+                        <label>Filtrar Setor: </label>
+                        <select id="filterSector" onchange="renderTable()">
+                            <option value="all">Todos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Usuário</th>
+                                <th>S.O</th>
+                                <th>Setor</th>
+                                <th>IP</th>
+                                <th>TC</th>
+                                <th style="text-align: right; padding-right: 25px;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="view-sectors" class="tab-content" style="display: none;">
+                <div class="controls">
+                    <button onclick="openSectorModal()" class="btn-main-add">➕ Adicionar Setor</button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome do Setor</th>
+                                <th>Identificador Visual</th>
+                                <th style="text-align: right; padding-right: 25px;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sectorTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="view-users" class="tab-content" style="display: none;">
+                <div class="controls">
+                    <button onclick="openUserModal()" class="btn-main-add">➕ Adicionar Usuário</button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome do Colaborador</th>
+                                <th style="text-align: right; padding-right: 25px;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
